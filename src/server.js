@@ -4,6 +4,7 @@ import 'dotenv/config.js';
 import { connectToDatabase } from './config/database.js';
 import apiLoggerMiddleware from './middlewares/apiLogger.mdw.js';
 import appRouter from './routes/index.js';
+import handleErrorMiddleware from './middlewares/handleError.mdw.js';
 
 const whitelist = ['http://localhost:3001'];
 
@@ -12,7 +13,6 @@ const corsOptions = {
     if (process.env.NODE_ENV === 'development') {
       return callback(null, true);
     }
-
     if (whitelist.includes(origin)) {
       callback(null, true);
     } else {
@@ -32,6 +32,8 @@ app.use(cors(corsOptions));
 app.use(apiLoggerMiddleware);
 
 app.use('/api/v1', appRouter);
+
+app.use(handleErrorMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Server is running on: http://localhost:${PORT}`);
