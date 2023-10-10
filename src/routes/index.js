@@ -1,0 +1,12 @@
+import express from 'express';
+import authRouter from './auth.route.js';
+import pageRouter from './page.route.js';
+import menuRouter from './menu.route.js';
+
+const router = express.Router();
+
+router.use('/auth', authRouter);
+router.use('/pages', pageRouter);
+router.use('/menus', menuRouter);
+
+export default router;
