@@ -2,7 +2,12 @@ import { ObjectId } from 'mongodb';
 import { db } from '../config/database.js';
 import asyncHandler from 'express-async-handler';
 
-const createDish = asyncHandler(async (req, res) => {
+const getAll = asyncHandler(async (_, res) => {
+  const dishes = await db.dishes.find().toArray();
+  res.json({ data: dishes });
+});
+
+const create = asyncHandler(async (req, res) => {
   const newDish = {
     ...req.body,
     createdAt: new Date(),
@@ -16,7 +21,7 @@ const createDish = asyncHandler(async (req, res) => {
   });
 });
 
-const updateDish = asyncHandler(async (req, res) => {
+const update = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
 
@@ -33,12 +38,30 @@ const updateDish = asyncHandler(async (req, res) => {
 
   await db.dishes.updateOne({ _id: new ObjectId(id) }, { $set: updatedFields });
 
-  res.json({ message: 'Update post successfully' });
+  res.json({ message: 'Update dish successfully' });
+});
+
+const deleteOne = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const existingDish = await db.dishes.findOne({ _id: new ObjectId(id) });
+
+  if (!existingDish) {
+    return res.status(400).json({
+      message: 'Dish not found'
+    });
+  }
+
+  await db.dishes.deleteOne({ _id: new ObjectId(id) });
+
+  res.json({ message: 'Delete dish successfully' });
 });
 
 const DishController = {
-  createDish,
-  updateDish
+  getAll,
+  create,
+  update,
+  deleteOne
 };
 
 export default DishController;
