@@ -3,41 +3,42 @@ import { db } from '../config/database.js';
 import asyncHandler from 'express-async-handler';
 
 const createPage = asyncHandler(async (req, res) => {
-  const {
-    brandName,
-    businessType,
-    isVegetarian,
-    hasAlcoholic,
-    orderWays,
-    address,
-    province,
-    district,
-    ward,
-    phoneNumber,
-    email
-  } = req.body;
+  const { userId } = req.body;
+
+  const existingUser = await db.users.findOne({ _id: new ObjectId(userId) });
+  if (!existingUser) {
+    return res.status(400).json({ message: 'User not found' });
+  }
 
   const newPage = {
+    _id: new ObjectId(),
     ...req.body,
-    createdAt: new Date()
+    createdAt: new Date(),
+    updateAt: new Date()
   };
   await db.pages.insertOne(newPage);
+  await db.users.updateOne(
+    { _id: new ObjectId(userId) },
+    { $set: { ...existingUser, activePageId: newPage._id, updateAt: new Date() } }
+  );
 
   res.status(201).json({
     message: 'Created page successfully'
   });
 });
 
-const getALLPages = asyncHandler(async (req, res) => {
-  try {
-    const pages = await db.pages.find().toArray();
+const getAllOfUser = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
 
-    res.json({
-      data: pages
-    });
-  } catch (error) {
-    res.status(500).json(error);
+  const existingUser = await db.users.findOne({ _id: new ObjectId(userId) });
+
+  if (!existingUser) {
+    return res.status(400).json({ message: 'User not found' });
   }
+
+  const pages = await db.pages.find({ userId: userId }).toArray();
+
+  res.json({ data: pages ?? [] });
 });
 
 const getPageById = asyncHandler(async (req, res) => {
@@ -77,7 +78,7 @@ const updatePage = asyncHandler(async (req, res) => {
   );
 
   return res.json({
-    message: 'Update post successfully'
+    message: 'Update page successfully'
   });
 });
 
@@ -100,7 +101,7 @@ const deletePage = asyncHandler(async (req, res) => {
 
 const PageController = {
   createPage,
-  getALLPages,
+  getAllOfUser,
   getPageById,
   updatePage,
   deletePage
