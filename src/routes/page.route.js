@@ -1,6 +1,6 @@
 import express from 'express';
 import { validateMdw } from '../middlewares/validate.mdw.js';
-import pageSchema from '../valdationSchema/page.validator.js';
+import pageSchema from '../validationSchema/page.validator.js';
 import PageController from '../controllers/page.controller.js';
 
 const router = express.Router();
