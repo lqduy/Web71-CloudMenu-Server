@@ -7,7 +7,8 @@ const getOne = asyncHandler(async (req, res) => {
   const existingUser = await db.users.findOne({ _id: new ObjectId(id) });
 
   if (!existingUser) {
-    return res.status(400).json({ message: 'User not found' });
+    res.status(400);
+    throw new Error('User not found');
   }
 
   res.json({ data: existingUser });
@@ -19,7 +20,8 @@ const update = asyncHandler(async (req, res) => {
   const existingUser = await db.users.findOne({ _id: new ObjectId(id) });
 
   if (!existingUser) {
-    return res.status(400).json({ message: 'User not found' });
+    res.status(400);
+    throw new Error('User not found');
   }
 
   const { _id, email, ...rest } = req.body;

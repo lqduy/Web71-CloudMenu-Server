@@ -7,7 +7,8 @@ const createPage = asyncHandler(async (req, res) => {
 
   const existingUser = await db.users.findOne({ _id: new ObjectId(userId) });
   if (!existingUser) {
-    return res.status(400).json({ message: 'User not found' });
+    res.status(400);
+    throw new Error('User not found');
   }
 
   const newPage = {
@@ -33,7 +34,8 @@ const getAllOfUser = asyncHandler(async (req, res) => {
   const existingUser = await db.users.findOne({ _id: new ObjectId(userId) });
 
   if (!existingUser) {
-    return res.status(400).json({ message: 'User not found' });
+    res.status(400);
+    throw new Error('User not found');
   }
 
   const pages = await db.pages.find({ userId: userId }).toArray();
@@ -47,9 +49,8 @@ const getPageById = asyncHandler(async (req, res) => {
   const existingId = await db.pages.findOne({ _id: new ObjectId(id) });
 
   if (!existingId) {
-    return res.status(500).json({
-      message: 'Page not found !'
-    });
+    res.status(400);
+    throw new Error('Page not found');
   }
 
   res.json(existingId);
@@ -62,20 +63,11 @@ const updatePage = asyncHandler(async (req, res) => {
   const existingId = await db.pages.findOne({ _id: new ObjectId(id) });
 
   if (!existingId) {
-    return res.json({
-      message: 'Page not found'
-    });
+    res.status(400);
+    throw new Error('Page not found');
   }
 
-  await db.pages.updateOne(
-    {
-      _id: new ObjectId(id)
-    },
-
-    {
-      $set: updatedFields
-    }
-  );
+  await db.pages.updateOne({ _id: new ObjectId(id) }, { $set: updatedFields });
 
   return res.json({
     message: 'Update page successfully'
@@ -88,9 +80,8 @@ const deletePage = asyncHandler(async (req, res) => {
   const existingId = await db.pages.findOne({ _id: new ObjectId(id) });
 
   if (!existingId) {
-    return res.json({
-      message: 'Page not found'
-    });
+    res.status(400);
+    throw new Error('Page not found');
   }
 
   await db.pages.deleteOne({ _id: new ObjectId(id) });

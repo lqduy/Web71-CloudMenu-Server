@@ -1,9 +1,21 @@
 import * as yup from 'yup';
-import { dishSchema } from './dish.validator.js';
 
 const itemSchema = yup.object().shape({
   id: yup.string().required(),
-  ...dishSchema
+  name: yup.string().required(),
+  description: yup.string().optional(),
+  images: yup.array().min(1).optional(),
+  group: yup.string().required(),
+  origin: yup.string().required(),
+  type: yup.string().required(),
+  preOrder: yup.boolean().required(),
+  sku: yup
+    .string()
+    .matches(/^[a-zA-Z0-9]{4,12}$/, 'Invalid format')
+    .required(),
+  unit: yup.string().required(),
+  price: yup.number().required(),
+  note: yup.string().optional()
 });
 
 const typeSchema = yup.object().shape({

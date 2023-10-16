@@ -6,7 +6,11 @@ import apiLoggerMiddleware from './middlewares/apiLogger.mdw.js';
 import appRouter from './routes/index.js';
 import handleErrorMiddleware from './middlewares/handleError.mdw.js';
 
-const whitelist = ['http://localhost:3001'];
+const whitelist = [
+  'http://localhost:3001',
+  'http://localhost:5173',
+  'https://vapi.vnappmob.com/api/province'
+];
 
 const corsOptions = {
   origin: (origin, callback) => {

@@ -13,7 +13,8 @@ const getOne = asyncHandler(async (req, res) => {
   const existingMenu = await db.menus.findOne({ _id: new ObjectId(id) });
 
   if (!existingMenu) {
-    return res.status(400).json({ message: 'Not found menu' });
+    res.status(400);
+    throw new Error('Menu not found');
   }
 
   res.json({ data: existingMenu });

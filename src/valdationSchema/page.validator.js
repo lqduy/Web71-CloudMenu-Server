@@ -11,7 +11,7 @@ const pageSchema = yup.object().shape({
   district: yup.string().required(),
   ward: yup.string().required(),
   phoneNumber: yup.number().required(),
-  email: yup.string().email().required(),
+  email: yup.string().email(),
   userId: yup.string().required()
 });
 

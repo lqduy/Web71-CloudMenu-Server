@@ -28,9 +28,8 @@ const update = asyncHandler(async (req, res) => {
   const existingDish = await db.dishes.findOne({ _id: new ObjectId(id) });
 
   if (!existingDish) {
-    return res.status(400).json({
-      message: 'Dish not found'
-    });
+    res.status(400);
+    throw new Error('Dish not found');
   }
 
   const { _id, createdAt, ...rest } = updateData;
@@ -47,9 +46,8 @@ const deleteOne = asyncHandler(async (req, res) => {
   const existingDish = await db.dishes.findOne({ _id: new ObjectId(id) });
 
   if (!existingDish) {
-    return res.status(400).json({
-      message: 'Dish not found'
-    });
+    res.status(400);
+    throw new Error('Dish not found');
   }
 
   await db.dishes.deleteOne({ _id: new ObjectId(id) });
