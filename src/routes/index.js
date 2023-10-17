@@ -4,6 +4,7 @@ import usersRouter from './user.route.js';
 import pageRouter from './page.route.js';
 import dishRouter from './dish.route.js';
 import menuRouter from './menu.route.js';
+import listRouter from './list.route.js';
 
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.use('/users', usersRouter);
 router.use('/pages', pageRouter);
 router.use('/dishes', dishRouter);
 router.use('/menus', menuRouter);
+router.use('/lists', listRouter);
 
 export default router;

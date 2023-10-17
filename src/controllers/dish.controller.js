@@ -13,8 +13,9 @@ const getAllOfPage = asyncHandler(async (req, res) => {
   }
 
   const dishes = await db.dishes.find({ pageId: pageId }).toArray();
+  const sortedDishList = dishes.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
-  res.json({ data: dishes ?? [] });
+  res.json({ data: sortedDishList ?? [] });
 });
 
 const create = asyncHandler(async (req, res) => {
