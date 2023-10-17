@@ -2,9 +2,19 @@ import { ObjectId } from 'mongodb';
 import { db } from '../config/database.js';
 import asyncHandler from 'express-async-handler';
 
-const getAll = asyncHandler(async (_, res) => {
-  const dishes = await db.dishes.find().toArray();
-  res.json({ data: dishes });
+const getAllOfPage = asyncHandler(async (req, res) => {
+  const { pageId } = req.params;
+
+  const existingPage = await db.pages.findOne({ _id: new ObjectId(pageId) });
+
+  if (!existingPage) {
+    res.status(400);
+    throw new Error('Page not found');
+  }
+
+  const dishes = await db.dishes.find({ pageId: pageId }).toArray();
+
+  res.json({ data: dishes ?? [] });
 });
 
 const create = asyncHandler(async (req, res) => {
@@ -56,7 +66,7 @@ const deleteOne = asyncHandler(async (req, res) => {
 });
 
 const DishController = {
-  getAll,
+  getAllOfPage,
   create,
   update,
   deleteOne

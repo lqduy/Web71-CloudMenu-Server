@@ -5,7 +5,7 @@ import dishValidator from '../valdationSchema/dish.validator.js';
 
 const router = express();
 
-router.get('/', DishController.getAll);
+router.get('/page/:pageId', DishController.getAllOfPage);
 router.post('/', validateMdw(dishValidator.dishSchema), DishController.create);
 router.put('/:id', validateMdw(dishValidator.dishSchema), DishController.update);
 router.delete('/:id', DishController.deleteOne);

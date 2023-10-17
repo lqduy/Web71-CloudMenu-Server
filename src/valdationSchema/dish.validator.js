@@ -2,6 +2,8 @@ import * as yup from 'yup';
 
 export const dishSchema = yup.object().shape({
   name: yup.string().required(),
+  userId: yup.string().required(),
+  pageId: yup.string().required(),
   description: yup.string().optional(),
   images: yup.array().min(1).optional(),
   group: yup.string().required(),
