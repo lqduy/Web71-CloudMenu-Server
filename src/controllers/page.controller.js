@@ -3,7 +3,7 @@ import { db } from '../config/database.js';
 import asyncHandler from 'express-async-handler';
 
 const createPage = asyncHandler(async (req, res) => {
-  const { userId } = req.body;
+  const { userId, name, businessType } = req.body;
 
   const existingUser = await db.users.findOne({ _id: new ObjectId(userId) });
   if (!existingUser) {
@@ -22,6 +22,15 @@ const createPage = asyncHandler(async (req, res) => {
     { _id: new ObjectId(userId) },
     { $set: { ...existingUser, activePageId: newPage._id, updateAt: new Date() } }
   );
+
+  await db.news.insertOne({
+    time: new Date(),
+    type: 'create page',
+    action: `bắt đầu kinh doanh`,
+    object: `${businessType} - ${name}`,
+    objectId: newPage._id,
+    madeBy: `${existingUser.firstName} ${existingUser.lastName}`
+  });
 
   res.status(201).json({
     message: 'Created page successfully'

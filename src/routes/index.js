@@ -5,6 +5,7 @@ import pageRouter from './page.route.js';
 import dishRouter from './dish.route.js';
 import menuRouter from './menu.route.js';
 import listRouter from './list.route.js';
+import newsRouter from './news.route.js';
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use('/pages', pageRouter);
 router.use('/dishes', dishRouter);
 router.use('/menus', menuRouter);
 router.use('/lists', listRouter);
+router.use('/news', newsRouter);
 
 export default router;
