@@ -15,7 +15,8 @@ const createPage = asyncHandler(async (req, res) => {
     _id: new ObjectId(),
     ...req.body,
     createdAt: new Date(),
-    updateAt: new Date()
+    updateAt: new Date(),
+    activeMenuId: null
   };
   await db.pages.insertOne(newPage);
   await db.users.updateOne(
@@ -69,9 +70,9 @@ const updatePage = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const updatedFields = req.body;
 
-  const existingId = await db.pages.findOne({ _id: new ObjectId(id) });
+  const existingPage = await db.pages.findOne({ _id: new ObjectId(id) });
 
-  if (!existingId) {
+  if (!existingPage) {
     res.status(400);
     throw new Error('Page not found');
   }
@@ -99,12 +100,39 @@ const deletePage = asyncHandler(async (req, res) => {
   });
 });
 
+const applyMenu = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { menuId } = req.body;
+
+  const existingPage = await db.pages.findOne({ _id: new ObjectId(id) });
+  if (!existingPage) {
+    res.status(400);
+    throw new Error('Page not found');
+  }
+  console.log(existingPage);
+
+  const existingMenu = await db.menus.findOne({ _id: new ObjectId(menuId) });
+  if (!existingMenu) {
+    res.status(400);
+    throw new Error('Menu not found');
+  }
+  console.log(existingMenu);
+
+  const newPageData = { ...existingPage, activeMenuId: menuId };
+  await db.pages.updateOne({ _id: new ObjectId(id) }, { $set: newPageData });
+
+  return res.json({
+    message: 'Menu is applied'
+  });
+});
+
 const PageController = {
   createPage,
   getAllOfUser,
   getPageById,
   updatePage,
-  deletePage
+  deletePage,
+  applyMenu
 };
 
 export default PageController;

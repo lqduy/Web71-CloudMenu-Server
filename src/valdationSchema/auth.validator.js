@@ -5,14 +5,13 @@ const signupSchema = yup.object().shape({
   password: yup
     .string()
     .matches(
-      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/,
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&^()._-])[A-Za-z\d@$!%*#?&^()._-]{8,24}$/,
       'Password must contain at least one number and one special character'
     )
     .min(8, 'Password must be at least 8 characters long'),
   firstName: yup.string().required(),
   lastName: yup.string().required(),
-  phoneNumber: yup.string().optional(),
-  gender: yup.string().oneOf(['male', 'female', 'other']).required()
+  phoneNumber: yup.string().required()
 });
 
 const loginSchema = yup.object().shape({

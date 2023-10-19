@@ -31,16 +31,26 @@ const getOne = asyncHandler(async (req, res) => {
 });
 
 const create = asyncHandler(async (req, res) => {
+  const { pageId } = req.body;
+
+  const existingPage = await db.pages.findOne({ _id: new ObjectId(pageId) });
+  if (!existingPage) {
+    res.status(400);
+    throw new Error('Page not found');
+  }
+
   const newMenu = {
-    ...req.body,
+    _id: new ObjectId(),
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    ...req.body
   };
 
   await db.menus.insertOne(newMenu);
 
   res.status(201).json({
-    message: 'Created successfully'
+    message: 'Created successfully',
+    createdMenuId: newMenu._id
   });
 });
 

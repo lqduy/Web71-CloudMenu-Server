@@ -15,4 +15,11 @@ const pageSchema = yup.object().shape({
   userId: yup.string().required()
 });
 
-export default pageSchema;
+const applyMenuSchema = yup.string().required();
+
+const pageValidator = {
+  pageSchema,
+  applyMenuSchema
+};
+
+export default pageValidator;
