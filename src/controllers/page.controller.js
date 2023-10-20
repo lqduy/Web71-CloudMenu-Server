@@ -109,20 +109,46 @@ const applyMenu = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Page not found');
   }
-  console.log(existingPage);
 
   const existingMenu = await db.menus.findOne({ _id: new ObjectId(menuId) });
   if (!existingMenu) {
     res.status(400);
     throw new Error('Menu not found');
   }
-  console.log(existingMenu);
 
   const newPageData = { ...existingPage, activeMenuId: menuId };
   await db.pages.updateOne({ _id: new ObjectId(id) }, { $set: newPageData });
 
-  return res.json({
+  await db.news.insertOne({
+    time: new Date(),
+    type: 'apply menu',
+    action: `áp dụng thực đơn ${existingMenu.dishQuantity} món`,
+    object: `${existingMenu.name}`,
+    objectId: existingMenu._id,
+    madeBy: `${existingPage.businessType} ${existingPage.name}`
+  });
+
+  res.json({
     message: 'Menu is applied'
+  });
+});
+
+const unApplyMenu = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const existingPage = await db.pages.findOne({ _id: new ObjectId(id) });
+  if (!existingPage) {
+    res.status(400);
+    throw new Error('Page not found');
+  }
+
+  await db.pages.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { ...existingPage, activeMenuId: null } }
+  );
+
+  res.json({
+    message: 'Menu is un-applied'
   });
 });
 
@@ -132,7 +158,8 @@ const PageController = {
   getPageById,
   updatePage,
   deletePage,
-  applyMenu
+  applyMenu,
+  unApplyMenu
 };
 
 export default PageController;

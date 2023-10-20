@@ -11,5 +11,6 @@ router.post('/', validateMdw(pageValidator.pageSchema), PageController.createPag
 router.delete('/:id', PageController.deletePage);
 router.put('/:id', validateMdw(pageValidator.pageSchema), PageController.updatePage);
 router.put('/:id/apply-menu', PageController.applyMenu);
+router.put('/:id/un-apply-menu', PageController.unApplyMenu);
 
 export default router;

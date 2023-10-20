@@ -13,8 +13,9 @@ const getAllOfPage = asyncHandler(async (req, res) => {
   }
 
   const menus = await db.menus.find({ pageId: pageId }).toArray();
+  const sortedMenuList = menus.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
-  res.json({ data: menus ?? [] });
+  res.json({ data: sortedMenuList ?? [] });
 });
 
 const getOne = asyncHandler(async (req, res) => {
