@@ -15,13 +15,13 @@ const createPage = asyncHandler(async (req, res) => {
     _id: new ObjectId(),
     ...req.body,
     createdAt: new Date(),
-    updateAt: new Date(),
+    updatedAt: new Date(),
     activeMenuId: null
   };
   await db.pages.insertOne(newPage);
   await db.users.updateOne(
     { _id: new ObjectId(userId) },
-    { $set: { ...existingUser, activePageId: newPage._id, updateAt: new Date() } }
+    { $set: { ...existingUser, activePageId: newPage._id, updatedAt: new Date() } }
   );
 
   await db.news.insertOne({
@@ -68,7 +68,6 @@ const getPageById = asyncHandler(async (req, res) => {
 
 const updatePage = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const updatedFields = req.body;
 
   const existingPage = await db.pages.findOne({ _id: new ObjectId(id) });
 
@@ -76,10 +75,13 @@ const updatePage = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Page not found');
   }
+  const { _id, userId, ...rest } = req.body;
 
+  const updatedFields = { ...existingPage, ...rest, updatedAt: new Date() };
+  console.log(updatedFields);
   await db.pages.updateOne({ _id: new ObjectId(id) }, { $set: updatedFields });
 
-  return res.json({
+  res.json({
     message: 'Update page successfully'
   });
 });
@@ -116,7 +118,7 @@ const applyMenu = asyncHandler(async (req, res) => {
     throw new Error('Menu not found');
   }
 
-  const newPageData = { ...existingPage, activeMenuId: menuId };
+  const newPageData = { ...existingPage, activeMenuId: menuId, updatedAt: new Date() };
   await db.pages.updateOne({ _id: new ObjectId(id) }, { $set: newPageData });
 
   await db.news.insertOne({
@@ -144,7 +146,7 @@ const unApplyMenu = asyncHandler(async (req, res) => {
 
   await db.pages.updateOne(
     { _id: new ObjectId(id) },
-    { $set: { ...existingPage, activeMenuId: null } }
+    { $set: { ...existingPage, activeMenuId: null, updatedAt: new Date() } }
   );
 
   res.json({

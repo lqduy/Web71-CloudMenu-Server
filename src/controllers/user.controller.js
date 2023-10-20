@@ -29,7 +29,7 @@ const update = asyncHandler(async (req, res) => {
   const updatedData = {
     ...existingUser,
     ...rest,
-    updateAt: new Date()
+    updatedAt: new Date()
   };
   await db.users.updateOne({ _id: new ObjectId(id) }, { $set: updatedData });
 

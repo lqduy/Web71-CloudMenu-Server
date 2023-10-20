@@ -11,8 +11,10 @@ const pageSchema = yup.object().shape({
   district: yup.string().required(),
   ward: yup.string().required(),
   phoneNumber: yup.number().required(),
-  email: yup.string().email(),
-  userId: yup.string().required()
+  email: yup.string().email().optional(),
+  userId: yup.string().required(),
+  activeMenuId: yup.string().nullable().optional(),
+  themeColor: yup.string().nullable().optional()
 });
 
 const applyMenuSchema = yup.string().required();

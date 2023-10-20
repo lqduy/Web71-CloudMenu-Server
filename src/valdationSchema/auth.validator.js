@@ -11,7 +11,10 @@ const signupSchema = yup.object().shape({
     .min(8, 'Password must be at least 8 characters long'),
   firstName: yup.string().required(),
   lastName: yup.string().required(),
-  phoneNumber: yup.string().required()
+  phoneNumber: yup.string().required(),
+  gender: yup.string().nullable().optional(),
+  activePageId: yup.string().nullable().optional(),
+  themeColor: yup.string().nullable().optional()
 });
 
 const loginSchema = yup.object().shape({
