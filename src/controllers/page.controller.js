@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import bcrypt from 'bcryptjs';
 import { db } from '../config/database.js';
 import asyncHandler from 'express-async-handler';
 
@@ -88,15 +89,27 @@ const updatePage = asyncHandler(async (req, res) => {
 
 const deletePage = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const { password } = req.body;
 
-  const existingId = await db.pages.findOne({ _id: new ObjectId(id) });
+  const existingPage = await db.pages.findOne({ _id: new ObjectId(id) });
 
-  if (!existingId) {
+  if (!existingPage) {
     res.status(400);
     throw new Error('Page not found');
   }
 
+  const existingUser = await db.users.findOne({ _id: new ObjectId(existingPage.userId) });
+  const isMatchedPassword = await bcrypt.compare(password, existingUser.password);
+
+  if (!isMatchedPassword) {
+    res.status(400);
+    throw new Error('Mật khẩu không đúng');
+  }
+
   await db.pages.deleteOne({ _id: new ObjectId(id) });
+  await db.menus.deleteMany({ pageId: new ObjectId(id) });
+  await db.dishes.deleteMany({ pageId: new ObjectId(id) });
+
   return res.json({
     message: 'Delete successfully'
   });

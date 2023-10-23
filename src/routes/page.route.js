@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/user/:userId', PageController.getAllOfUser);
 router.get('/:id', PageController.getPageById);
 router.post('/', validateMdw(pageValidator.pageSchema), PageController.createPage);
-router.delete('/:id', PageController.deletePage);
+router.post('/:id', PageController.deletePage);
 router.put('/:id', validateMdw(pageValidator.pageSchema), PageController.updatePage);
 router.put('/:id/apply-menu', PageController.applyMenu);
 router.put('/:id/un-apply-menu', PageController.unApplyMenu);
