@@ -6,6 +6,7 @@ import dishRouter from './dish.route.js';
 import menuRouter from './menu.route.js';
 import listRouter from './list.route.js';
 import newsRouter from './news.route.js';
+import orderRouter from './order.route.js';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use('/dishes', dishRouter);
 router.use('/menus', menuRouter);
 router.use('/lists', listRouter);
 router.use('/news', newsRouter);
+router.use('/order', orderRouter);
 
 export default router;
