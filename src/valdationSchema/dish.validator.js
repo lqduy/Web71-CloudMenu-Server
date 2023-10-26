@@ -5,7 +5,7 @@ export const dishSchema = yup.object().shape({
   userId: yup.string().required(),
   pageId: yup.string().required(),
   description: yup.string().optional(),
-  images: yup.array().min(1).optional(),
+  images: yup.array().optional(),
   group: yup.string().required(),
   origin: yup.string().required(),
   type: yup.string().required(),

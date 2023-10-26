@@ -11,8 +11,11 @@ const getTopNewPage = asyncHandler(async (req, res) => {
   }
 
   const topNew = await db.pages
-    .aggregate([{ $sort: { createdAt: -1 } }])
-    .limit(+quantity)
+    .aggregate([
+      { $match: { avatar: { $exists: true, $elemMatch: { $ne: null } } } },
+      { $sort: { createdAt: -1 } },
+      { $limit: +quantity }
+    ])
     .toArray();
 
   res.json({ data: topNew });
@@ -27,11 +30,22 @@ const getTopNewDish = asyncHandler(async (req, res) => {
   }
 
   const topNew = await db.dishes
-    .aggregate([{ $sort: { createdAt: -1 } }])
-    .limit(+quantity)
+    .aggregate([
+      { $match: { images: { $exists: true, $elemMatch: { $ne: null } } } },
+      { $sort: { createdAt: -1 } },
+      { $limit: +quantity }
+    ])
     .toArray();
 
-  res.json({ data: topNew });
+  const dishIds = topNew.map(dish => new ObjectId(dish.pageId));
+  const pageDataList = await db.pages.find({ _id: { $in: dishIds } }).toArray();
+
+  const topNewMapping = topNew.map(dish => {
+    const pageData = pageDataList.find(page => page._id.toString() === dish.pageId);
+    return { ...dish, pageData };
+  });
+
+  res.json({ data: topNewMapping });
 });
 
 const ListController = { getTopNewPage, getTopNewDish };

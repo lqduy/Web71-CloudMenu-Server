@@ -13,6 +13,7 @@ const connectToDatabase = async () => {
     const database = mongoClient.db(DATABASE);
 
     // Collections
+    db.media = database.collection('media');
     db.users = database.collection('users');
     db.pages = database.collection('pages');
     db.dishes = database.collection('dishes');
