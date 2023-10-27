@@ -67,37 +67,11 @@ const deleteOne = asyncHandler(async (req, res) => {
   res.json({ message: 'Delete dish successfully' });
 });
 
-const uploadImage = asyncHandler(async (req, res) => {
-  // 1. Get file from request object
-  const file = req.file;
-  const { id } = req.params;
-
-  const existingDish = await db.dishes.findOne({ _id: new ObjectId(id) });
-  if (!existingDish) {
-    res.status(400);
-    throw new Error('Dish not found');
-  }
-
-  // 2. Upload file from server to Cloudinary
-  const { url } = await CloudinaryService.uploadSingleFile(file.path);
-
-  // 3. Update image to mongodb
-  await db.dishes.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { images: [...existingDish.images, url] } }
-  );
-
-  res.json({
-    message: 'Upload image successfully'
-  });
-});
-
 const DishController = {
   getAllOfPage,
   create,
   update,
-  deleteOne,
-  uploadImage
+  deleteOne
 };
 
 export default DishController;

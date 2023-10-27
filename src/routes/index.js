@@ -1,4 +1,5 @@
 import express from 'express';
+import mediaRouter from './media.route.js';
 import authRouter from './auth.route.js';
 import usersRouter from './user.route.js';
 import pageRouter from './page.route.js';
@@ -10,6 +11,7 @@ import orderRouter from './order.route.js';
 
 const router = express.Router();
 
+router.use('/media', mediaRouter);
 router.use('/auth', authRouter);
 router.use('/users', usersRouter);
 router.use('/pages', pageRouter);

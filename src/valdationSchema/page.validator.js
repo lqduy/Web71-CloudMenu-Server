@@ -10,6 +10,7 @@ const pageSchema = yup.object().shape({
   province: yup.string().required(),
   district: yup.string().required(),
   ward: yup.string().required(),
+  avatar: yup.array().max(1).required(),
   phoneNumber: yup.number().required(),
   email: yup.string().email().optional(),
   userId: yup.string().required(),
