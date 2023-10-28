@@ -19,6 +19,6 @@ router.use('/dishes', dishRouter);
 router.use('/menus', menuRouter);
 router.use('/lists', listRouter);
 router.use('/news', newsRouter);
-router.use('/order', orderRouter);
+router.use('/orders', orderRouter);
 
 export default router;
