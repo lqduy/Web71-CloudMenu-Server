@@ -6,6 +6,7 @@ const pageSchema = yup.object().shape({
   isVegetarian: yup.boolean().required(),
   hasAlcoholic: yup.boolean().required(),
   orderWays: yup.array().min(1).required(),
+  tables: yup.number().optional(),
   address: yup.string().required(),
   province: yup.string().required(),
   district: yup.string().required(),

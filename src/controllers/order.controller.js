@@ -24,7 +24,8 @@ const createOrder = asyncHandler(async (req, res) => {
 const getAllOfPage = asyncHandler(async (req, res) => {
   const { pageId } = req.params;
   const allOrder = await db.orders
-    .find({ pageId: pageId, status: { $ne: ORDER_STATUS.DONE } })
+    .find({ pageId: pageId })
+    // .find({ pageId: pageId, status: { $ne: ORDER_STATUS.DONE } })
     .toArray();
   const sortedOrderList = allOrder.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
