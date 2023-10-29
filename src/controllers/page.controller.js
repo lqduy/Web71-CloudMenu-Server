@@ -57,14 +57,19 @@ const getAllOfUser = asyncHandler(async (req, res) => {
 const getPageById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const existingId = await db.pages.findOne({ _id: new ObjectId(id) });
+  const existingPage = await db.pages.findOne({ _id: new ObjectId(id) });
 
-  if (!existingId) {
+  if (!existingPage) {
     res.status(400);
     throw new Error('Page not found');
   }
 
-  res.json(existingId);
+  const users = await db.users.find().toArray();
+  const likes = users.filter(user => Array.isArray(user.likes) && user.likes.includes(id)).length;
+
+  const pageData = { ...existingPage, likes };
+
+  res.json(pageData);
 });
 
 const updatePage = asyncHandler(async (req, res) => {
