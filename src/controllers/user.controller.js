@@ -24,7 +24,7 @@ const update = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 
-  const { _id, email, ...rest } = req.body;
+  const { _id, ...rest } = req.body;
 
   const updatedData = {
     ...existingUser,
