@@ -31,7 +31,8 @@ const createPage = asyncHandler(async (req, res) => {
     action: `bắt đầu kinh doanh`,
     object: `${businessType} - ${name}`,
     objectId: newPage._id,
-    madeBy: `${existingUser.firstName} ${existingUser.lastName}`
+    madeBy: `${existingUser.firstName} ${existingUser.lastName}`,
+    pageId: newPage._id
   });
 
   res.status(201).json({
@@ -145,7 +146,8 @@ const applyMenu = asyncHandler(async (req, res) => {
     action: `áp dụng thực đơn ${existingMenu.dishQuantity} món`,
     object: `${existingMenu.name}`,
     objectId: existingMenu._id,
-    madeBy: `${existingPage.businessType} ${existingPage.name}`
+    madeBy: `${existingPage.businessType} ${existingPage.name}`,
+    pageId: id
   });
 
   res.json({

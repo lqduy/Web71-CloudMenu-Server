@@ -5,10 +5,20 @@ import asyncHandler from 'express-async-handler';
 const getNewest = asyncHandler(async (req, res) => {
   const { q } = req.query;
   const quantity = +q ?? 10;
-  const news = await db.news
+  let news = await db.news
     .aggregate([{ $sort: { time: -1 } }])
     .limit(quantity)
     .toArray();
+
+  news = await Promise.all(
+    news.map(async item => {
+      const pageData = await db.pages.findOne({ _id: new ObjectId(item.pageId) });
+      const mappingItem = pageData ? { ...item, pageData } : item;
+      console.log(mappingItem);
+      return mappingItem;
+    })
+  );
+
   res.json({ data: news });
 });
 
