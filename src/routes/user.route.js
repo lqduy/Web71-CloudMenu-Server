@@ -8,5 +8,6 @@ const router = express();
 router.get('/:id', UserController.getOne);
 router.put('/:id', authMiddleware, UserController.update);
 router.get('/:id/likes', authMiddleware, UserController.getLikes);
+router.put('/:id/changePassword', authMiddleware, UserController.changePassword);
 
 export default router;
