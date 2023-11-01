@@ -25,6 +25,7 @@ const signup = asyncHandler(async (req, res) => {
     lastName,
     phoneNumber,
     gender,
+    likes: [],
     password: hashedPassword,
     createdAt: new Date(),
     updatedAt: new Date()
