@@ -82,7 +82,7 @@ const updatePage = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Page not found');
   }
-  const { _id, userId, ...rest } = req.body;
+  const { _id, ...rest } = req.body;
 
   const updatedFields = { ...existingPage, ...rest, updatedAt: new Date() };
   console.log(updatedFields);
