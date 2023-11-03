@@ -8,8 +8,10 @@ import handleErrorMiddleware from './middlewares/handleError.mdw.js';
 
 const whitelist = [
   'http://localhost:3001',
+  'http://localhost:3000',
   'http://localhost:5173',
-  'https://vapi.vnappmob.com/api/province'
+  'https://vapi.vnappmob.com/api/province',
+  'https://web71-cloud-menu-server.onrender.com'
 ];
 
 const corsOptions = {
