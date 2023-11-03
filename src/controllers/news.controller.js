@@ -14,7 +14,6 @@ const getNewest = asyncHandler(async (req, res) => {
     news.map(async item => {
       const pageData = await db.pages.findOne({ _id: new ObjectId(item.pageId) });
       const mappingItem = pageData ? { ...item, pageData } : item;
-      console.log(mappingItem);
       return mappingItem;
     })
   );
