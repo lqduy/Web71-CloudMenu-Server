@@ -36,6 +36,9 @@ app.use(cors(corsOptions));
 app.use(apiLoggerMiddleware);
 
 app.use('/api/v1', appRouter);
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 app.use(handleErrorMiddleware);
 
