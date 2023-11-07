@@ -11,7 +11,7 @@ const signup = asyncHandler(async (req, res) => {
   const existingUser = await db.users.findOne({ email });
   if (existingUser) {
     res.status(400);
-    throw new Error('Email has already exist!');
+    throw new Error('Email đã được sử dụng!');
   }
 
   // 2. Hash password
@@ -54,7 +54,7 @@ const login = asyncHandler(async (req, res) => {
   const existingUser = await db.users.findOne({ email });
   if (!existingUser) {
     res.status(400);
-    throw new Error('Invalid credentials');
+    throw new Error('Tài khoản không tồn tại!');
   }
 
   // 2. Check password
@@ -62,7 +62,7 @@ const login = asyncHandler(async (req, res) => {
 
   if (!isMatchedPassword) {
     res.status(400);
-    throw new Error('Email or password is not valid');
+    throw new Error('Email hoặc mật khẩu không chính xác!');
   }
 
   // 3. Phát hành 1 tấm vé (accessToken) bằng JSON Web Token
