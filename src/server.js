@@ -8,8 +8,10 @@ import handleErrorMiddleware from './middlewares/handleError.mdw.js';
 
 const whitelist = [
   'http://localhost:3001',
+  'http://localhost:3000',
   'http://localhost:5173',
-  'https://vapi.vnappmob.com/api/province'
+  'https://vapi.vnappmob.com/api/province',
+  'https://web71-cloud-menu-server.onrender.com'
 ];
 
 const corsOptions = {
@@ -32,10 +34,13 @@ const PORT = process.env.PORT;
 connectToDatabase();
 
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors('*'));
 app.use(apiLoggerMiddleware);
 
 app.use('/api/v1', appRouter);
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 app.use(handleErrorMiddleware);
 
