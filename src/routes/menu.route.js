@@ -8,5 +8,6 @@ const router = express.Router();
 router.get('/page/:pageId', MenuController.getAllOfPage);
 router.get('/:id', MenuController.getOne);
 router.post('/', MenuController.create);
+router.delete('/:id', MenuController.deleteOne);
 
 export default router;

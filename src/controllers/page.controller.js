@@ -101,7 +101,7 @@ const deletePage = asyncHandler(async (req, res) => {
 
   if (!existingPage) {
     res.status(400);
-    throw new Error('Page not found');
+    throw new Error('Không tìm thấy trang');
   }
 
   const existingUser = await db.users.findOne({ _id: new ObjectId(existingPage.userId) });
@@ -117,7 +117,7 @@ const deletePage = asyncHandler(async (req, res) => {
   await db.dishes.deleteMany({ pageId: new ObjectId(id) });
 
   return res.json({
-    message: 'Delete successfully'
+    message: 'Xóa trang thành công'
   });
 });
 

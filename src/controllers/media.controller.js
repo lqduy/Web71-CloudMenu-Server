@@ -5,7 +5,6 @@ import CloudinaryService from '../services/cloudinary.service.js';
 
 const uploadImage = asyncHandler(async (req, res) => {
   // 1. Get file from request object
-  console.log(req.user);
   const file = req.file;
   const user = req.user;
 
@@ -20,7 +19,7 @@ const uploadImage = asyncHandler(async (req, res) => {
   // 3. Update image to mongodb
   await db.media.insertOne({ url, user });
 
-  res.json({
+  res.status(201).json({
     message: 'Upload image successfully',
     userId: user.id,
     url

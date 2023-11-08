@@ -55,10 +55,27 @@ const create = asyncHandler(async (req, res) => {
   });
 });
 
+const deleteOne = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const existingMenu = await db.menus.findOne({ _id: new ObjectId(id) });
+  if (!existingMenu) {
+    res.status(400);
+    throw new Error('Không tìm thấy thực đơn');
+  }
+
+  await db.menus.deleteOne({ _id: new ObjectId(id) });
+
+  res.json({
+    message: 'Xóa thực đơn thành công'
+  });
+});
+
 const MenuController = {
   getAllOfPage,
   getOne,
-  create
+  create,
+  deleteOne
 };
 
 export default MenuController;
